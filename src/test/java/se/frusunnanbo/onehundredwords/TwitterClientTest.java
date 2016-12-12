@@ -1,10 +1,7 @@
 package se.frusunnanbo.onehundredwords;
 
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import twitter4j.*;
 
 /**
  * Created by piolin on 12/12/16.
@@ -12,8 +9,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TwitterClientTest
 {
     @Test
-    public void true_is_true()
+    public void can_search_for_hashtag() throws TwitterException
     {
-        assertThat(true, is(equalTo(true)));
+        Twitter twitter = TwitterFactory.getSingleton();
+        Query query = new Query("#brexit");
+        QueryResult result = twitter.search(query);
+        for (Status status : result.getTweets()) {
+            System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
+        }
     }
 }
