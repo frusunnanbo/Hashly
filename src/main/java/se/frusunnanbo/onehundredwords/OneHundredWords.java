@@ -13,7 +13,8 @@ public class OneHundredWords
     public static void main(String argv[])
     {
         final Gson gson = new Gson();
-        final SearchService searchService = new SearchService();
+        final SearchService searchService = new SearchService(new TwitterSearchClient());
+
         Spark.get("/v1/commonwords", (req, res) -> searchService.countWordsForQuery(getQuery(req)), gson::toJson);
     }
 
