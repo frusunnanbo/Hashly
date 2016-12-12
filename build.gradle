@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
 
+    compile group: 'com.sparkjava', name: 'spark-core', version: '2.5.3'
     compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.5'
 
 
