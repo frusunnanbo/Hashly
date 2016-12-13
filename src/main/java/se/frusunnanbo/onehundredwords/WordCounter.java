@@ -15,8 +15,10 @@ public class WordCounter
         return text.stream()
                 .flatMap(input -> Stream.of(input.split(" ")))
                 .filter(word -> !word.isEmpty())
-                .distinct()
-                .map(word -> new WordCount(word))
+                .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .map(entry -> new WordCount(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 }
