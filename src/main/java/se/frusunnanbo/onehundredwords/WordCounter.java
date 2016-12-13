@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  */
 public class WordCounter
 {
-    public static List<WordCount> countWordsIn(Collection<String> text)
+    public static List<WordCount> findMostCommonWords(Collection<String> text, int maxNumberOfWords)
     {
         return text.stream()
                 .flatMap(input -> Stream.of(input.split(" ")))
@@ -19,6 +19,8 @@ public class WordCounter
                 .entrySet()
                 .stream()
                 .map(entry -> new WordCount(entry.getKey(), entry.getValue()))
+                .sorted()
+                .limit(maxNumberOfWords)
                 .collect(Collectors.toList());
     }
 }

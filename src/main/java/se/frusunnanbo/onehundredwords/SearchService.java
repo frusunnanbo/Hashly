@@ -22,6 +22,6 @@ public class SearchService
 
     private static List<WordCount> countWords(Collection<String> searchResult)
     {
-        return WordCounter.countWordsIn(searchResult);
+        return WordCounter.findMostCommonWords(searchResult, 100);
     }
 }

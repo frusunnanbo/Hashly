@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Created by piolin on 12/12/16.
  */
-public class WordCount
+public class WordCount implements Comparable<WordCount>
 {
     private final String word;
     private final long count;
@@ -52,5 +52,11 @@ public class WordCount
                 .add("word", word)
                 .add("count", count)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(WordCount other)
+    {
+        return Long.valueOf(other.count).compareTo(Long.valueOf(this.count));
     }
 }
