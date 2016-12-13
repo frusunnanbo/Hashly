@@ -1,21 +1,22 @@
 package se.frusunnanbo.onehundredwords;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import twitter4j.*;
+import twitter4j.TwitterException;
+
+import java.util.Collection;
 
 /**
  * Created by piolin on 12/12/16.
  */
 public class TwitterClientTest
 {
+    @Ignore("This is not a test, just a convenient sanity check for manual use.")
     @Test
     public void can_search_for_hashtag() throws TwitterException
     {
-        Twitter twitter = TwitterFactory.getSingleton();
-        Query query = new Query("#brexit");
-        QueryResult result = twitter.search(query);
-        for (Status status : result.getTweets()) {
-            System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
-        }
+        Collection<String> texts = new TwitterSearchClient().getSearchResult("#bolibompa");
+        texts.forEach(text -> System.out.println(text));
+        System.out.println("Found total: " + texts.size());
     }
 }
