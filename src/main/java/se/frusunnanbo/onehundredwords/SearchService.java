@@ -1,7 +1,5 @@
 package se.frusunnanbo.onehundredwords;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -24,6 +22,6 @@ public class SearchService
 
     private static List<WordCount> countWords(Collection<String> searchResult)
     {
-        return ImmutableList.of(new WordCount());
+        return WordCounter.countWordsIn(searchResult);
     }
 }

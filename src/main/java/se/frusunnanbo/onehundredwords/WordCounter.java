@@ -15,7 +15,7 @@ public class WordCounter
         return text.stream()
                 .flatMap(input -> Stream.of(input.split(" ")))
                 .distinct()
-                .map(word -> new WordCount())
+                .map(word -> new WordCount(word))
                 .collect(Collectors.toList());
     }
 }
