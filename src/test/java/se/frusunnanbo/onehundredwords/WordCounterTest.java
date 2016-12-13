@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.hasSize;
 
 /**
@@ -22,6 +23,33 @@ public class WordCounterTest
 
         // then
         assertThat(WordCounter.countWordsIn(text), hasSize(2));
+    }
+
+    @Test
+    public void counts_no_words() {
+        // given
+        Collection<String> text = ImmutableList.of("");
+
+        // then
+        assertThat(WordCounter.countWordsIn(text), emptyCollectionOf(WordCount.class));
+    }
+
+    @Test
+    public void counts_no_empty_words() {
+        // given
+        Collection<String> text = ImmutableList.of("", "", "");
+
+        // then
+        assertThat(WordCounter.countWordsIn(text), emptyCollectionOf(WordCount.class));
+    }
+
+    @Test
+    public void counts_a_single_word() {
+        // given
+        Collection<String> text = ImmutableList.of("apan");
+
+        // then
+        assertThat(WordCounter.countWordsIn(text), containsInAnyOrder(new WordCount("apan")));
     }
 
     @Test

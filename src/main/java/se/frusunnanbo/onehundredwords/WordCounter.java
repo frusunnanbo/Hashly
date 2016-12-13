@@ -14,6 +14,7 @@ public class WordCounter
     {
         return text.stream()
                 .flatMap(input -> Stream.of(input.split(" ")))
+                .filter(word -> !word.isEmpty())
                 .distinct()
                 .map(word -> new WordCount(word))
                 .collect(Collectors.toList());
