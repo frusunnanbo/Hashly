@@ -10,10 +10,12 @@ import java.util.stream.Stream;
  */
 public class WordCounter
 {
-    public static List<WordCount> findMostCommonWords(Collection<String> text, int maxNumberOfWords)
+    public static List<WordCount> findMostCommonWords(Collection<String> texts, int maxNumberOfWords)
     {
-        return text.stream()
-                .flatMap(input -> Stream.of(input.split(" ")))
+        return texts.stream()
+                .flatMap(input -> Stream.of(input.split("\\s")))
+                .filter(word -> !isUrl(word))
+                .map(word -> cleanNonWordCharacters(word))
                 .filter(word -> !word.isEmpty())
                 .map(String::toLowerCase)
                 .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
@@ -23,5 +25,13 @@ public class WordCounter
                 .sorted()
                 .limit(maxNumberOfWords)
                 .collect(Collectors.toList());
+    }
+
+    private static boolean isUrl(String input) {
+        return input.startsWith("https://") || input.startsWith("http://");
+    }
+
+    private static String cleanNonWordCharacters(String input) {
+        return input.replaceAll("^[@#.]+", "").replaceAll("[@#.,;,:?!]+$", "");
     }
 }

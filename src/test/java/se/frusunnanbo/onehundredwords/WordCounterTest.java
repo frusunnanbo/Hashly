@@ -71,6 +71,36 @@ public class WordCounterTest
         assertThat(mostCommonWordsIn("Fisk fisk FISK fISK fIsk"), contains(wordCount("fisk", 5)));
     }
 
+    @Test
+    public void filters_away_links() {
+        assertThat(mostCommonWordsIn("http://apan.com", "giraffen", "https://gnun.se"),
+                contains(wordCount("giraffen", 1)));
+    }
+
+    @Test
+    public void handles_all_space_as_space() {
+        assertThat(mostCommonWordsIn("torskblock\nananas\tsillsallad"),
+                containsInAnyOrder(wordCount("torskblock", 1), wordCount("ananas", 1), wordCount("sillsallad", 1)));
+    }
+
+    @Test
+    public void cleans_non_word_characters() {
+        assertThat(mostCommonWordsIn("#lucia, #bolibompa. #gingerdragon @ Sveriges Television: https://t.co/sst65Se20j"),
+                containsInAnyOrder(
+                        wordCount("lucia", 1),
+                        wordCount("bolibompa", 1),
+                        wordCount("gingerdragon", 1),
+                        wordCount("sveriges", 1),
+                        wordCount("television", 1)));
+    }
+
+    @Test
+    public void preserves_local_characters() {
+        assertThat(mostCommonWordsIn("räksmörgås"),
+                containsInAnyOrder(wordCount("räksmörgås", 1)));
+
+    }
+
     private List<WordCount> mostCommonWordsIn(String... texts)
     {
         return mostCommonWordsIn(DEFAULT_MAX_WORDS, asList(texts));
