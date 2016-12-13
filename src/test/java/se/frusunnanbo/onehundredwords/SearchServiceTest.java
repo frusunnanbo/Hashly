@@ -29,14 +29,19 @@ public class SearchServiceTest
         ConcurrencyCountingClient searchClient = new ConcurrencyCountingClient();
         SearchService searchService = new SearchService(searchClient);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_CONCURRENT_ATTEMPTS);
-        IntStream.rangeClosed(1, NUMBER_OF_CONCURRENT_ATTEMPTS)
+        whenSearchRequestsAreIssued(searchService, NUMBER_OF_CONCURRENT_ATTEMPTS);
+
+        assertThat(searchClient.maxConcurrencyLevelSeen.get(), is(lessThanOrEqualTo(MAX_CONCURRENCY_LEVEL)));
+    }
+
+    private void whenSearchRequestsAreIssued(SearchService searchService, int numberOfConcurrentAttempts) throws InterruptedException
+    {
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfConcurrentAttempts);
+        IntStream.rangeClosed(1, numberOfConcurrentAttempts)
                 .forEach(i -> executorService.submit(() -> searchService.countWordsForQuery("query" + i)));
 
         executorService.shutdown();
         assertTrue("Executor did not terminate all jobs", executorService.awaitTermination(15, TimeUnit.SECONDS));
-
-        assertThat(searchClient.maxConcurrencyLevelSeen.get(), is(lessThanOrEqualTo(MAX_CONCURRENCY_LEVEL)));
     }
 
     private static class ConcurrencyCountingClient implements SearchClient
