@@ -9,11 +9,12 @@ import java.util.stream.Collectors;
 /**
  * Created by piolin on 12/12/16.
  */
-public class TwitterSearchClient
+public class TwitterSearchClient implements SearchClient
 {
     private static final int MAX_TWEETS = 100;
 
-    Collection<String> getSearchResult(String query)
+    @Override
+    public Collection<String> getSearchResult(String query)
     {
         Twitter twitter = TwitterFactory.getSingleton();
        try
