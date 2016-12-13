@@ -15,6 +15,7 @@ public class WordCounter
         return text.stream()
                 .flatMap(input -> Stream.of(input.split(" ")))
                 .filter(word -> !word.isEmpty())
+                .map(String::toLowerCase)
                 .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
                 .entrySet()
                 .stream()

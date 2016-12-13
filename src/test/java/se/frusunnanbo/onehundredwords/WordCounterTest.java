@@ -1,6 +1,5 @@
 package se.frusunnanbo.onehundredwords;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -20,92 +19,71 @@ public class WordCounterTest
 
     @Test
     public void counts_no_words() {
-        // given
-        Collection<String> text = ImmutableList.of("");
-
-        // then
-        assertThat(mostCommonWordsIn(text), emptyCollectionOf(WordCount.class));
+        assertThat(mostCommonWordsIn(""), emptyCollectionOf(WordCount.class));
     }
 
     @Test
     public void counts_no_empty_words() {
-        // given
-        Collection<String> text = ImmutableList.of("", "", "");
-
-        // then
-        assertThat(mostCommonWordsIn(text), emptyCollectionOf(WordCount.class));
+        assertThat(mostCommonWordsIn("", "", ""), emptyCollectionOf(WordCount.class));
     }
 
     @Test
     public void counts_a_single_word() {
-        // given
-        Collection<String> text = ImmutableList.of("apan");
-
-        // then
-        assertThat(mostCommonWordsIn(text), containsInAnyOrder(new WordCount("apan", 1)));
+        assertThat(mostCommonWordsIn("apan"), containsInAnyOrder(wordCount("apan", 1)));
     }
 
     @Test
     public void counts_two_different_words() {
-        // given
-        Collection<String> text = ImmutableList.of("apan", "bepan");
-
-        // then
-        assertThat(mostCommonWordsIn(text), containsInAnyOrder(new WordCount("apan", 1), new WordCount("bepan", 1)));
+       assertThat(mostCommonWordsIn("apan", "bepan"), containsInAnyOrder(wordCount("apan", 1), wordCount("bepan", 1)));
     }
 
     @Test
     public void counts_two_space_separated_words() {
-        // given
-        Collection<String> text = ImmutableList.of("apan bepan");
-
-        // then
-        assertThat(mostCommonWordsIn(text), containsInAnyOrder(new WordCount("apan", 1), new WordCount("bepan", 1)));
+       assertThat(mostCommonWordsIn("apan bepan"), containsInAnyOrder(wordCount("apan", 1), wordCount("bepan", 1)));
     }
 
     @Test
     public void counts_a_duplicate_word() {
-        // given
-        Collection<String> text = ImmutableList.of("apan", "apan");
-
-        // then
-        assertThat(mostCommonWordsIn(text), containsInAnyOrder(new WordCount("apan", 2)));
+        assertThat(mostCommonWordsIn("apan", "apan"),
+                containsInAnyOrder(wordCount("apan", 2)));
     }
 
     @Test
     public void counts_two_space_separated_pairs() {
-        // given
-        Collection<String> text = ImmutableList.of("apan bepan", "bepan apan");
-
-        // then
-        assertThat(mostCommonWordsIn(text), containsInAnyOrder(new WordCount("apan", 2), new WordCount("bepan", 2)));
+         assertThat(mostCommonWordsIn("apan bepan", "bepan apan"),
+                 containsInAnyOrder(wordCount("apan", 2), wordCount("bepan", 2)));
     }
 
     @Test
     public void sorts_in_descending_order() {
-        assertThat(mostCommonWordsIn(texts("apan bepan cepan", "bepan apan", "apan")),
-                contains(new WordCount("apan", 3), new WordCount("bepan", 2), new WordCount("cepan", 1)));
+        assertThat(mostCommonWordsIn("apan bepan cepan", "bepan apan", "apan"),
+                contains(wordCount("apan", 3), wordCount("bepan", 2), wordCount("cepan", 1)));
     }
 
     @Test
     public void limits_output() {
-        assertThat(mostCommonWordsIn(texts("apan bepan cepan", "bepan apan", "apan"), 2),
-                contains(new WordCount("apan", 3), new WordCount("bepan", 2)));
+        assertThat(mostCommonWordsIn(2, asList("apan bepan cepan", "bepan apan", "apan")),
+                contains(wordCount("apan", 3), wordCount("bepan", 2)));
     }
 
-    private List<WordCount> mostCommonWordsIn(Collection<String> texts)
+    @Test
+    public void lowercases_all_words() {
+        assertThat(mostCommonWordsIn("Fisk fisk FISK fISK fIsk"), contains(wordCount("fisk", 5)));
+    }
+
+    private List<WordCount> mostCommonWordsIn(String... texts)
     {
-        return mostCommonWordsIn(texts, DEFAULT_MAX_WORDS);
+        return mostCommonWordsIn(DEFAULT_MAX_WORDS, asList(texts));
     }
 
-    private List<WordCount> mostCommonWordsIn(Collection<String> texts, int maxNumberOfResults)
+    private List<WordCount> mostCommonWordsIn(int maxNumberOfResults, Collection<String> texts)
     {
         return findMostCommonWords(texts, maxNumberOfResults);
     }
 
-    private Collection<String> texts(String...texts)
+    private static WordCount wordCount(String word, int count)
     {
-        return asList(texts);
+        return new WordCount(word, count);
     }
 
 }
