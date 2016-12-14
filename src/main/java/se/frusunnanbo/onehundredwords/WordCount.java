@@ -4,9 +4,7 @@ import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
 
-/**
- * Created by piolin on 12/12/16.
- */
+
 public class WordCount implements Comparable<WordCount>
 {
     private final String word;
@@ -16,14 +14,6 @@ public class WordCount implements Comparable<WordCount>
     {
         this.word = word;
         this.count = count;
-    }
-
-    public String word() {
-        return word;
-    }
-
-    public long count() {
-        return count;
     }
 
     @Override

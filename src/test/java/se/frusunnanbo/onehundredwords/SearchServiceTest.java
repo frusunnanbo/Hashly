@@ -23,15 +23,21 @@ public class SearchServiceTest
     private static final int MAX_CONCURRENCY_LEVEL = 3;
     private static final int NUMBER_OF_CONCURRENT_ATTEMPTS = 10;
 
+    private SearchService searchService;
+    private final ConcurrencyCountingClient concurrencyCountingClient = new ConcurrencyCountingClient();
+
     @Test
     public void limits_parallell_twitter_requests_to_three() throws InterruptedException
     {
-        ConcurrencyCountingClient searchClient = new ConcurrencyCountingClient();
-        SearchService searchService = new SearchService(searchClient);
+        givenSearchServiceWithClient(concurrencyCountingClient);
 
         whenSearchRequestsAreIssued(searchService, NUMBER_OF_CONCURRENT_ATTEMPTS);
 
-        assertThat(searchClient.maxConcurrencyLevelSeen.get(), is(lessThanOrEqualTo(MAX_CONCURRENCY_LEVEL)));
+        assertThat(concurrencyCountingClient.maxConcurrencyLevelSeen(), is(lessThanOrEqualTo(MAX_CONCURRENCY_LEVEL)));
+    }
+
+    private void givenSearchServiceWithClient(SearchClient searchClient) {
+        this.searchService = new SearchService(searchClient);
     }
 
     private void whenSearchRequestsAreIssued(SearchService searchService, int numberOfConcurrentAttempts) throws InterruptedException
@@ -47,7 +53,11 @@ public class SearchServiceTest
     private static class ConcurrencyCountingClient implements SearchClient
     {
         private final AtomicInteger concurrencyCounter = new AtomicInteger(0);
-        final AtomicInteger maxConcurrencyLevelSeen = new AtomicInteger(0);
+        private final AtomicInteger maxConcurrencyLevelSeen = new AtomicInteger(0);
+
+        public int maxConcurrencyLevelSeen() {
+            return maxConcurrencyLevelSeen.get();
+        }
 
         @Override
         public Collection<String> getSearchResult(String query)

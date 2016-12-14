@@ -5,19 +5,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by piolin on 12/12/16.
- */
-public class WordCounter
+
+public class WordProcessor
 {
-    public static List<WordCount> findMostCommonWords(Collection<String> texts, int maxNumberOfWords)
+    public static List<WordCount> mostCommonWordsIn(Collection<String> texts, int maxNumberOfWords)
     {
         return texts.stream()
                 .flatMap(input -> Stream.of(input.split("\\s")))
                 .filter(word -> !isUrl(word))
                 .map(word -> cleanNonWordCharacters(word))
                 .filter(word -> !word.isEmpty())
-                .map(String::toLowerCase)
+                .map(word -> word.toLowerCase())
                 .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
                 .entrySet()
                 .stream()

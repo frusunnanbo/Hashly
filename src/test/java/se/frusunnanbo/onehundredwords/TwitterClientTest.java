@@ -6,9 +6,6 @@ import twitter4j.TwitterException;
 
 import java.util.Collection;
 
-/**
- * Created by piolin on 12/12/16.
- */
 public class TwitterClientTest
 {
     @Ignore("This is not a test, just a convenient sanity check for manual use.")

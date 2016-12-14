@@ -2,18 +2,16 @@ package se.frusunnanbo.onehundredwords;
 
 import org.junit.Test;
 
-import java.util.Collection;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static se.frusunnanbo.onehundredwords.WordCounter.findMostCommonWords;
 
 /**
  * Created by piolin on 12/12/16.
  */
-public class WordCounterTest
+public class WordProcessorTest
 {
     private static int DEFAULT_MAX_WORDS = 100;
 
@@ -62,7 +60,7 @@ public class WordCounterTest
 
     @Test
     public void limits_output() {
-        assertThat(mostCommonWordsIn(2, asList("apan bepan cepan", "bepan apan", "apan")),
+        assertThat(WordProcessor.mostCommonWordsIn(asList("apan bepan cepan", "bepan apan", "apan"), 2),
                 contains(wordCount("apan", 3), wordCount("bepan", 2)));
     }
 
@@ -101,14 +99,9 @@ public class WordCounterTest
 
     }
 
-    private List<WordCount> mostCommonWordsIn(String... texts)
+    private static List<WordCount> mostCommonWordsIn(String... texts)
     {
-        return mostCommonWordsIn(DEFAULT_MAX_WORDS, asList(texts));
-    }
-
-    private List<WordCount> mostCommonWordsIn(int maxNumberOfResults, Collection<String> texts)
-    {
-        return findMostCommonWords(texts, maxNumberOfResults);
+        return WordProcessor.mostCommonWordsIn(asList(texts), DEFAULT_MAX_WORDS);
     }
 
     private static WordCount wordCount(String word, int count)
