@@ -9,11 +9,11 @@ Lists the 100 most common words for a given Twitter hashtag.
 
 Go to 
 
-http://localhost:4567/v1/commonwords/?q=%23<hashtag>
+http://localhost:4567/v1/commonwords?q=%23<hashtag>
 
 e.g.
 
-http://localhost:4567/v1/commonwords/?q=%23bolibompa
+http://localhost:4567/v1/commonwords?q=%23bolibompa
 
 ## Output
 
