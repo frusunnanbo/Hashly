@@ -1,19 +1,29 @@
 # OneHundredWords
 Lists the 100 most common words for a given Twitter hashtag.
 
-## Starting
+## Running
+
+You need to provide Twitter authentication details in order to use their search api. To do so: add a file called `twitter4j.properties` to the project root, with the following contents:
+
+`oauth.consumerKey=<your consumer key>`
+
+`oauth.consumerSecret=<your consumer secret>`
+
+`oauth.accessToken=<your access token>`
+
+`oauth.accessTokenSecret=<your access token secret>`
+
+Then run the application like so
 
 `$ ./gradlew run`
 
 ## Using
 
-Go to 
-
-http://localhost:4567/v1/commonwords?q=%23<hashtag>
+Go to `http://localhost:4567/v1/commonwords?q=%23YourHashtagHere`
 
 e.g.
 
-http://localhost:4567/v1/commonwords?q=%23bolibompa
+[http://localhost:4567/v1/commonwords?q=%23bolibompa](http://localhost:4567/v1/commonwords?q=%23bolibompa)
 
 ## Output
 
